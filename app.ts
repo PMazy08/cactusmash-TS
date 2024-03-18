@@ -5,6 +5,7 @@ import { router as user } from "./api/user";
 import { router as photo } from "./api/photos";
 import { router as uploadprofiles } from "./api/uploadprofile";
 import { router as uploadphotos } from "./api/uploadphoto";
+import cors from "cors";
 
 
 export const app = express();
@@ -12,9 +13,17 @@ export const app = express();
 // app.use(bodyParser.text());
 
 app.use(bodyParser.json());
+app.use(
+    cors({
+      origin: "*",
+    })
+  );
 
+// test 
 app.use("/", index);
+
 app.use("/user", user);
+
 app.use("/photo", photo);
 
 app.use("/uploadprofile", uploadprofiles);

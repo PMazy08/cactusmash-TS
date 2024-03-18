@@ -45,7 +45,7 @@ router.post("/register", (req, res) => {
 });
 
 
-// login
+// login post
 router.post("/login", (req, res) => {
   const { email, password } = req.body; // รับค่า username และ password จาก req.body
   // ตรวจสอบว่ามี username และ password ที่ระบุหรือไม่
@@ -67,11 +67,41 @@ router.post("/login", (req, res) => {
       // res.json({ message: "เข้าสู่ระบบสำเร็จ" });
     } else {
       // ข้อมูลเข้าสู่ระบบไม่ถูกต้อง
-      res.status(401).json({ error: "emailหรือรหัสผ่านไม่ถูกต้อง" });
+      res.json(null);
+      // res.status(401).json({ error: "emailหรือรหัสผ่านไม่ถูกต้อง" });
     }
   });
 });
 
+
+
+// // login get
+// router.get("/loginget/:email/:password", (req, res) => {
+//   const { email, password } = req.query; // รับค่า username และ password จาก req.query
+//   // ตรวจสอบว่ามี username และ password ที่ระบุหรือไม่
+  
+//   if (!email || !password) {
+//     return res.status(400).json({ error: "กรุณาระบุชื่อผู้ใช้และรหัสผ่าน" });
+//   }
+
+//   let sql = "SELECT users.id, users.username, users.role, users.avatar FROM users WHERE email = ? AND password = ?";
+//   sql = mysql.format(sql, [email, password]);
+
+//   conn.query(sql, (err, result) => {
+//     if (err) {
+//       return res.status(500).json({ error: "ข้อผิดพลาดภายในเซิร์ฟเวอร์"+err });
+//     }
+
+//     if (result.length > 0) {
+//       // ข้อมูลเข้าสู่ระบบถูกต้อง
+//       res.json(result);
+//       // res.json({ message: "เข้าสู่ระบบสำเร็จ" });
+//     } else {
+//       // ข้อมูลเข้าสู่ระบบไม่ถูกต้อง
+//       res.status(401).json({ error: "emailหรือรหัสผ่านไม่ถูกต้อง" });
+//     }
+//   });
+// });
 
 
 
