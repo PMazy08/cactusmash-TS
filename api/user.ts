@@ -13,7 +13,19 @@ export const router = express.Router();
 
 // get all users
 router.get("/", (req, res) => {
-  conn.query('select * from users', (err, result, fields)=>{
+  conn.query('SELECT users.id, users.username, users.role, users.avatar FROM users WHERE users.role = "user"', (err, result, fields)=>{
+    if(err){
+        res.status(400).json(err);
+    }else {
+        res.json(result);
+    }
+  });
+});
+
+// get user by id
+router.get("/:id", (req, res) => {
+  const id = +req.params.id;
+  conn.query('SELECT users.id, users.username, users.avatar FROM users WHERE users.id = ?', [id], (err, result, fields)=>{
     if(err){
         res.status(400).json(err);
     }else {
