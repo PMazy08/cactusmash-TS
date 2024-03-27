@@ -39,14 +39,17 @@ class FileMiddleware {
   //inser photo by u_id
   router.post("/:u_id", fileUpload.diskLoader.single("file"), (req, res) => {
     let u_id:number = +req.params.u_id;
+    let elo = 1200;
 
-    const servername = "https://cactusmash.onrender.com"
+    // const servername = "https://cactusmash.onrender.com"
+    const servername = "http://localhost:3000"
 
     const fileUrl = servername+"/photos/" + fileUpload.filename;
-    let sql = "INSERT INTO `photos`(`u_id`, `filename`) VALUES (?,?)";
+    let sql = "INSERT INTO `photos`(`u_id`, `filename`, `elo`) VALUES (?,?,?)";
     sql = mysql.format(sql, [
         u_id,
-        fileUrl
+        fileUrl,
+        elo
       ]);
         conn.query(sql, (err, result) => {
           if (err) throw err;

@@ -35,16 +35,51 @@ class FileMiddleware {
   }
   
   const fileUpload = new FileMiddleware()
-  router.post("/:u_id", fileUpload.diskLoader.single("file"), (req, res) => {
-    let id = +req.params.u_id;
-    res.json({ filename: id+"xxxxxxx/profiles/" + fileUpload.filename });
-    // const fileUrl = "/profiles/" + fileUpload.filename;
-    // let sql = "INSERT INTO `users`(`username`, `email`, `password`, `role`, `avatar`) VALUES (?,?,?,?,?)";
-    // sql = mysql.format(sql, [
-    //   ]);
-    //     conn.query(sql, (err, result) => {
-    //       if (err) throw err;
-    //       res.status(201).json({ affected_row: result.affectedRows, last_idx: result.insertId });
-    //     });
+//   router.put("/:newname/:u_id", fileUpload.diskLoader.single("file"), (req, res) => {
+//     let u_id = req.params.u_id;
+//     let newname = req.params.newname;
 
+//     // const servername = "https://cactusmash.onrender.com"
+//     const servername = "http://localhost:3000"
+//     const fileUrl = servername+"/profiles/" + fileUpload.filename;
+
+//     // const sql = `UPDATE users SET username = ?, avatar = ? WHERE id = ?`
+//     let sql = `UPDATE users SET username = ?, avatar = ? WHERE id = ?`;
+//     sql = mysql.format(sql, [
+//       newname,
+//       fileUrl,
+//       u_id,
+//     ]);
+//       conn.query(sql, (err, result) => {
+//         if (err) throw err;
+//         res.status(201).json({ affected_row: result.affectedRows, last_idx: result.insertId });
+//       });
+
+// });
+
+
+router.put("/:newname/:u_id", fileUpload.diskLoader.single("file"), (req, res) => {
+  let u_id = req.params.u_id;
+  let newname = req.params.newname;
+
+  // const servername = "https://cactusmash.onrender.com"
+  const servername = "http://localhost:3000";
+  const fileUrl = servername + "/profiles/" + fileUpload.filename; // Fix: Use req.file.filename to get the uploaded filename.
+
+  // const sql = `UPDATE users SET username = ?, avatar = ? WHERE id = ?`
+  let sql = `UPDATE users SET username = ?, avatar = ? WHERE id = ?`;
+  sql = mysql.format(sql, [
+    newname,
+    fileUrl,
+    u_id,
+  ]);
+  
+  conn.query(sql, (err, result) => {
+    if (err) {
+      console.error(err); // Fix: Log error instead of throwing it.
+      res.status(500).json({ error: "Internal server error" }); // Fix: Send appropriate error response.
+    } else {
+      res.status(201).json({ affected_row: result.affectedRows, last_idx: result.insertId });
+    }
   });
+});

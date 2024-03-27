@@ -24,7 +24,6 @@ router.get("/", (req, res) => {
           result.forEach((row: any, index: number) => {
               row.rank = rank++;
           });
-
           res.json(result);
       }
   });
@@ -56,4 +55,29 @@ router.get('/:id', (req, res) => {
       });
 });
 
-// insert photo with u_id
+// insert photo with u_ide
+
+
+// update Elo
+router.put("/elo/:newElo/:pho_id", (req, res) => {
+  const id = +req.params.pho_id;
+  const newElo = +req.params.newElo;
+  const sql = "UPDATE photos SET elo = ? WHERE id = ?";
+  conn.query(sql, [newElo, id], (err, result) => {
+    if (err) {
+      throw err;
+    }
+    res.status(201).json({ affected_row: result.affectedRows });
+  });
+});
+
+// delete photo by phoId
+router.delete("/:id", (req, res) => {
+  let id = +req.params.id;
+  conn.query("delete from photos where id = ?", [id], (err, result) => {
+     if (err) throw err;
+     res
+       .status(200)
+       .json({ affected_row: result.affectedRows });
+  });
+});
